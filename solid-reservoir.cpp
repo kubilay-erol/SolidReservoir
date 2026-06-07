@@ -1,6 +1,7 @@
 
 #include <cstdint>
 #include <new>
+#include <cstdstring>
 #include "fixed.h"
 
 
