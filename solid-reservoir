@@ -1,0 +1,81 @@
+
+#include <cstdint>
+#include <new>
+#include "fixed.h"
+
+
+class SolidReservoir {
+    
+public:
+    static SolidReservoir* create_reservoir(SolidReservoir* add, const char* name, fixed temp, int32_t size, fixed mass, fixed c) {
+        if (add == nullptr) {
+            return nullptr;
+        }
+        if (mass <= 0) {
+            return nullptr;
+        }
+        if (temp <= 0) {
+            return nullptr;
+        }
+        if ((size != 0) && (size != 1)) {
+            return nullptr;
+        }
+        if (c <= 0) {
+            return nullptr;
+        }
+        
+        SolidReservoir* ptr = new (add) SolidReservoir(name, temp, size, mass, c);
+        
+        return ptr; //return reservoir pointer
+    }
+    
+    const char* name() {
+        return name_;
+    }
+    
+    fixed temp() {
+        return temp_;
+    }
+    
+    int32_t size() {
+        return size_;
+    }
+    
+    fixed mass() {
+        return mass_;
+    }
+    
+    fixed c() {
+        return c_;
+    }
+    
+    void heat_transfer(fixed heat) {
+        if (mass_ == -1) {
+            return;
+        }
+        
+        else {
+            temp_ = (heat/(mass_*c_)) + temp_;
+        }
+    }
+    
+    
+private: 
+
+    char name_[32] = {}; 
+    fixed temp_ = 0;
+    int32_t size_ = 0; //1-infinite reservoir, 0-finite reservoir
+    fixed mass_ = 0;
+    fixed c_ = 0; // specific heat capacity of reservoir
+
+    SolidReservoir(const char* n, fixed t, int32_t s, fixed m, fixed c) : temp_(t), size_(s), mass_(m), c_(c) {
+        strncpy(name_, n, 31);
+        name_[31] = '\0';
+        if (size_ == 1) {
+            mass_ = -1;
+            c_ = -1;
+        }
+        
+    } 
+    
+};
