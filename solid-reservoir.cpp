@@ -66,7 +66,7 @@ private:
     fixed temp_ = 0;
     int32_t size_ = 0; //1-infinite reservoir, 0-finite reservoir
     fixed mass_ = 0;
-    fixed c_ = 0; // specific heat capacity of reservoir
+    fixed c_ = 0; // specific heat capacity of the reservoir
 
     SolidReservoir(const char* n, fixed t, int32_t s, fixed m, fixed c) : temp_(t), size_(s), mass_(m), c_(c) {
         strncpy(name_, n, 31);
