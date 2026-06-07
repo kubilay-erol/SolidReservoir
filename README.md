@@ -18,9 +18,9 @@ All physical quantities use the `fixed` class, which stores values as scaled `in
 
 | Parameter | Unit |
 |---|---|
-| `temp` | °C or K (consistent use is caller's responsibility) |
-| `mass` | kg |
-| `c` | J/kg·K |
+| `temp` | K (consistent use is caller's responsibility) |
+| `mass` | g |
+| `c` | J/g·K |
 | `heat` | J |
 
 ## Usage
