@@ -37,8 +37,8 @@ SolidReservoir* engine = SolidReservoir::create_reservoir(
     "engine block",
     fixed(20),   // initial temp
     0,           // 0 = finite, 1 = infinite reservoir
-    fixed(10),   // mass in kg
-    fixed(500)   // specific heat capacity J/kg·K
+    fixed(10),   // mass in g
+    fixed(500)   // specific heat capacity J/g·K
 );
 
 // when heat is absorbed
