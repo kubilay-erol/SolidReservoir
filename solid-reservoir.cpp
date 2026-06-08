@@ -54,7 +54,7 @@ public:
         return mass_ * c_;
     }
 
-    fixed thermal_energy(fixed ambi_temp) const { //input ambient temperature
+    fixed exergy(fixed ambi_temp) const { //input ambient temperature
         if (size_ == 1) {
             return -1; 
         }
