@@ -92,6 +92,12 @@ public:
             other->set_temp(this->temp());
         }        
     }
+
+    static void destroy_reservoir(SolidReservoir* res) {
+        if (res != nullptr) {
+            res->~SolidReservoir();
+        }
+    }
     
 private: 
 
