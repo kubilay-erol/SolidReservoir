@@ -54,11 +54,11 @@ public:
         return mass_ * c_;
     }
 
-    fixed thermal_energy() const {
+    fixed thermal_energy(fixed ambi_temp) const { //input ambient temperature
         if (size_ == 1) {
             return -1; 
         }
-        return mass_ * c_ * temp_;
+        return mass_ * c_ * (temp_ - ambi_temp);
     }
     
     void heat_transfer(fixed heat) {
