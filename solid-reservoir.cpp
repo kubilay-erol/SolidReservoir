@@ -1,14 +1,13 @@
-
 #include <cstdint>
 #include <new>
-#include <cstdstring>
+#include <cstring>
 #include "fixed.h"
 
 
 class SolidReservoir {
     
 public:
-    static SolidReservoir* create_reservoir(SolidReservoir* add, const char* name, fixed temp, int32_t size, fixed mass, fixed c) {
+    static SolidReservoir* create_reservoir(SolidReservoir* add, const char* name, fixed temp, int32_t size, fixed c, fixed mass = 1) {
         if (add == nullptr) {
             return nullptr;
         }
@@ -25,7 +24,7 @@ public:
             return nullptr;
         }
         
-        SolidReservoir* ptr = new (add) SolidReservoir(name, temp, size, mass, c);
+        SolidReservoir* ptr = new (add) SolidReservoir(name, temp, size, c, mass);
         
         return ptr; //return reservoir pointer
     }
@@ -69,7 +68,7 @@ private:
     fixed mass_ = 0;
     fixed c_ = 0; // specific heat capacity of the reservoir
 
-    SolidReservoir(const char* n, fixed t, int32_t s, fixed m, fixed c) : temp_(t), size_(s), mass_(m), c_(c) {
+    SolidReservoir(const char* n, fixed t, int32_t s, fixed c, fixed m) : temp_(t), size_(s), c_(c), mass_(m) {
         strncpy(name_, n, 31);
         name_[31] = '\0';
         if (size_ == 1) {
