@@ -47,6 +47,19 @@ public:
     fixed c() const {
         return c_;
     }
+    fixed thermal_capacity() const {
+        if (size_ == 1) {
+            return -1; 
+        }
+        return mass_ * c_;
+    }
+
+    fixed thermal_energy() const {
+        if (size_ == 1) {
+            return -1; 
+        }
+        return mass_ * c_ * temp_;
+    }
     
     void heat_transfer(fixed heat) {
         if (mass_ == -1) {
