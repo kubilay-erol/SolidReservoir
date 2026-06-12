@@ -4,15 +4,23 @@
 #include "fixed.h"
 
 
-enum ReservoirType {
+enum class ReservoirType {
 infinite = 1,
 finite = 0,
 };
 
+
+fixed::fixed(ReservoirType restyp) { //add conversion constructor 
+ 
+    *this = fixed(static_cast<int32_t>(restyp));   
+}
+
+
+
 class SolidReservoir {
     
 public:
-    static SolidReservoir* create_reservoir(SolidReservoir* add, const char* name, fixed temp, int32_t size, fixed c, fixed mass = infinite) {
+    static SolidReservoir* create_reservoir(SolidReservoir* add, const char* name, fixed temp, int32_t size, fixed c, fixed mass = static_cast<fixed>(ReservoirType::infinite)) {
         if (add == nullptr) {
             return nullptr;
         }
@@ -22,7 +30,7 @@ public:
         if (temp <= 0) {
             return nullptr;
         }
-        if ((size != finite) && (size != infinite)) {
+        if ((size != static_cast<fixed>(ReservoirType::finite)) && (size != static_cast<fixed>(ReservoirType::infinite))) {
             return nullptr;
         }
         if (c <= 0) {
@@ -54,14 +62,14 @@ public:
         return c_;
     }
     fixed thermal_capacity() const {
-        if (size_ == infinite) {
+        if (size_ == static_cast<fixed>(ReservoirType::infinite)) {
             return -1; 
         }
         return mass_ * c_;
     }
 
     fixed exergy(fixed ambi_temp) const { //input ambient temperature
-        if (size_ == infinite) {
+        if (size_ == static_cast<fixed>(ReservoirType::infinite)) {
             return -1; 
         }
         return mass_ * c_ * (temp_ - ambi_temp);
@@ -117,7 +125,7 @@ private:
     SolidReservoir(const char* n, fixed t, int32_t s, fixed c, fixed m) : temp_(t), size_(s), c_(c), mass_(m) {
         strncpy(name_, n, 31);
         name_[31] = '\0';
-        if (size_ == infinite) {
+        if (size_ == static_cast<fixed>(ReservoirType::infinite)) {
             mass_ = -1;
             c_ = -1;
         }
