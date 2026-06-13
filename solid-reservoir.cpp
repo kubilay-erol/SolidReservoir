@@ -22,7 +22,7 @@ class SolidReservoir {
 public:
     static SolidReservoir* create_reservoir(SolidReservoir* add, const char* name, fixed temp, int32_t size, fixed c, fixed mass = static_cast<fixed>(ReservoirType::infinite)) {
         if (add == nullptr) {
-            return nullptr;
+            return nullptr;             
         }
         if (mass <= 0) {
             return nullptr;
@@ -30,7 +30,7 @@ public:
         if (temp <= 0) {
             return nullptr;
         }
-        if ((size != static_cast<fixed>(ReservoirType::finite)) && (size != static_cast<fixed>(ReservoirType::infinite))) {
+        if ((fixed(size) != static_cast<fixed>(ReservoirType::finite)) && (fixed(size) != static_cast<fixed>(ReservoirType::infinite))) {
             return nullptr;
         }
         if (c <= 0) {
@@ -41,6 +41,48 @@ public:
         
         return ptr; //return reservoir pointer
     }
+    
+    bool is_infinite() const {
+        if (mass_ == -1) {
+            return true;
+        }
+        
+        else {
+            return false;
+        }
+    }
+    
+    bool is_finite() const {
+        if (mass_ != -1) {
+            return true;
+        }
+        
+        else {
+            return false;
+        }
+    }
+    
+
+    void absorb_heat_from(SolidReservoir& resvr, fixed amount) {
+        if (this == &resvr) {
+            return;
+        }
+        
+        resvr.heat_transfer(-amount);
+        heat_transfer(amount);
+    }
+    
+    
+    void release_heat_to(SolidReservoir& resvr, fixed amount) {
+        if (this == &resvr) {
+            return;
+        }
+        
+        resvr.heat_transfer(amount);
+        heat_transfer(-amount);
+    }
+    
+
     
     const char* name() const {
         return name_;
@@ -68,15 +110,15 @@ public:
         return mass_ * c_;
     }
 
-    fixed exergy(fixed ambi_temp) const { //input ambient temperature
-        if (size_ == static_cast<fixed>(ReservoirType::infinite)) {
+    fixed available_heat(fixed ambi_temp) const { //input ambient temperature
+        if (fixed(size_) == static_cast<fixed>(ReservoirType::infinite)) {
             return -1; 
         }
-        return mass_ * c_ * (temp_ - ambi_temp);
-    }
+        return mass_ * c_ * (temp_ - ambi_temp); //ambient temp is assumed to be inf reservoir
+    } //returns highest possible heat that can be rejected by the reservoir
     
     void heat_transfer(fixed heat) {
-        if (mass_ == -1) {
+        if (is_infinite()) {
             return;
         }
         
@@ -121,7 +163,8 @@ private:
     int32_t size_ = 0; //1-infinite reservoir, 0-finite reservoir
     fixed mass_ = 0;
     fixed c_ = 0; // specific heat capacity of the reservoir
-
+    
+    
     SolidReservoir(const char* n, fixed t, int32_t s, fixed c, fixed m) : temp_(t), size_(s), c_(c), mass_(m) {
         strncpy(name_, n, 31);
         name_[31] = '\0';
